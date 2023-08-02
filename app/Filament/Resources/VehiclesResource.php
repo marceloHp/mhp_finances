@@ -27,13 +27,13 @@ class VehiclesResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('id')->disabled(true),
                 Forms\Components\TextInput::make('name')
-                    ->required()->translateLabel(),
+                    ->required()->translateLabel()->label('Nome'),
                 Forms\Components\TextInput::make('identifier')
-                    ->required(),
+                    ->required()->translateLabel()->label('Placa'),
                 Forms\Components\TextInput::make('driver')
-                    ->required(),
+                    ->required()->translateLabel()->label('Motorista'),
                 Forms\Components\Toggle::make('active')
-                    ->required(),
+                    ->required()->translateLabel()->label('Ativo'),
             ]);
     }
 
@@ -41,12 +41,12 @@ class VehiclesResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('identifier'),
-                Tables\Columns\TextColumn::make('driver'),
-                Tables\Columns\IconColumn::make('active')
+                Tables\Columns\TextColumn::make('name')->sortable()->searchable()->translateLabel()->label('Nome'),
+                Tables\Columns\TextColumn::make('identifier')->translateLabel()->label('Placa'),
+                Tables\Columns\TextColumn::make('driver')->translateLabel()->label('Motorista'),
+                Tables\Columns\IconColumn::make('active')->translateLabel()->label('Ativo')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('created_at')->translateLabel()->label('Data de criação')
                     ->dateTime('d/m/y H:m:s'),
             ])
             ->filters([

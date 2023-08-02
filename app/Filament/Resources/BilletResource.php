@@ -34,8 +34,8 @@ class BilletResource extends Resource
                     ->relationship('user', 'name')
                     ->translateLabel()
                     ->label('Usuário')
-                    ->searchable()
-                ->default(auth()->user()),
+                    ->searchable(),
+//                ->default(auth()->user()),
                 Forms\Components\Select::make('status')
                     ->required()
                     ->options(['pending' => 'Pendente', 'partial_pending' => 'Parcialmente pendente', 'paid' => "Quitado", 'canceled' => 'Cancelado'])

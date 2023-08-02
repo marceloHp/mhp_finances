@@ -18,7 +18,7 @@ class AddressResource extends Resource
     protected static ?string $model = Address::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationLabel = 'Endereços';
+    protected static ?string $label = 'Endereços';
 
     public static function form(Form $form): Form
     {
@@ -42,7 +42,7 @@ class AddressResource extends Resource
                 Forms\Components\TextInput::make('postal_code')
                 ->translateLabel()->label('CEP'),
                 Forms\Components\Toggle::make('main')
-                    ->required(),
+                    ->required()->translateLabel()->label('Principal'),
             ]);
     }
 
@@ -51,17 +51,17 @@ class AddressResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\IconColumn::make('main')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('address'),
-                Tables\Columns\TextColumn::make('neighborhood'),
-                Tables\Columns\TextColumn::make('address_number'),
-                Tables\Columns\TextColumn::make('complement'),
-                Tables\Columns\TextColumn::make('city'),
-                Tables\Columns\TextColumn::make('postal_code'),
+                    ->boolean()->translateLabel()->label('Principal'),
+                Tables\Columns\TextColumn::make('address')->translateLabel()->label('Endereço'),
+                Tables\Columns\TextColumn::make('neighborhood')->translateLabel()->label('Bairro'),
+                Tables\Columns\TextColumn::make('address_number')->translateLabel()->label('Número'),
+                Tables\Columns\TextColumn::make('complement')->translateLabel()->label('Complemento'),
+                Tables\Columns\TextColumn::make('city')->translateLabel()->label('Cidade'),
+                Tables\Columns\TextColumn::make('postal_code')->translateLabel()->label('CEP'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
+                    ->dateTime()->translateLabel()->label('Data de criação'),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->dateTime()->translateLabel()->label('Data de atualização'),
             ])
             ->filters([
                 //
