@@ -4,12 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\FinancialReleasesResource\Pages;
 use App\Filament\Resources\FinancialReleasesResource\RelationManagers;
+use App\Filament\Support\FinancialReleases\Origin;
 use App\Models\FinancialReleases;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Support\RawJs;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class FinancialReleasesResource extends Resource
 {
@@ -40,11 +42,10 @@ class FinancialReleasesResource extends Resource
                     Forms\Components\TextInput::make('recipient')
                         ->required()->label('Beneficiário'),
                     Forms\Components\TextInput::make('value')
-                        ->required()->label('Valor (R$)')->numeric()
-                        ->mask(fn(Forms\Components\TextInput\Mask $mask) => $mask
-                            ->numeric()
-                            ->decimalPlaces(2)
-                            ->padFractionalZeros())
+                        ->required()->label('Valor (R$)')
+                        ->mask(RawJs::make(<<<'JS'
+                            $money($input, '.', ',', 4)
+                           JS))
                 ])->columns(2),
             ]);
     }
@@ -56,14 +57,7 @@ class FinancialReleasesResource extends Resource
                 Tables\Columns\TextColumn::make('id')->label('ID')->copyable()->copyMessage('ID copied')->copyMessageDuration(100),
                 Tables\Columns\TextColumn::make('vehicle.name')->label('Veículo'),
                 Tables\Columns\TextColumn::make('description')->label('Descrição do lançamento'),
-                Tables\Columns\TextColumn::make('origin')->label('Origem')->enum([
-                    'cash_entry' => 'Entrada',
-                    'cash_out' => 'Saída',
-                ]),
-                Tables\Columns\TextColumn::make('status')->label('Status')->enum([
-                    'paid' => 'Quitado',
-                    'pending' => 'Pendente',
-                ]),
+                Tables\Columns\SelectColumn::make('origin')->options(Origin::class),
                 Tables\Columns\TextColumn::make('recipient')->label('Beneficiário'),
                 Tables\Columns\TextColumn::make('value')->label('Valor (R$)')->formatStateUsing(fn(string $state): string => self::numberFormat($state)),
                 Tables\Columns\TextColumn::make('created_at')
@@ -101,7 +95,7 @@ class FinancialReleasesResource extends Resource
 
     public static function numberFormat($number): string
     {
-        return number_format($number, 2);
+        return number_format((float)$number, 2);
     }
 
 }

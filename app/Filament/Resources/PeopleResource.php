@@ -6,10 +6,10 @@ use App\Filament\Resources\PeopleResource\Pages;
 use App\Filament\Resources\PeopleResource\RelationManagers;
 use App\Models\People;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -17,7 +17,7 @@ class PeopleResource extends Resource
 {
     protected static ?string $model = People::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
     protected static ?string $navigationLabel = 'Pessoa';
     public static function form(Form $form): Form
     {
@@ -44,7 +44,7 @@ class PeopleResource extends Resource
                     ->required()
                     ->translateLabel()
                     ->label('Endereço')
-                    ->relationship('addresses', 'address')
+                    ->relationship('address', 'address')
                     ->searchable(),
                 Forms\Components\TextInput::make('cellphone')
                     ->tel()
