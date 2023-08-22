@@ -6,10 +6,10 @@ use App\Filament\Resources\VehiclesResource\Pages;
 use App\Filament\Resources\VehiclesResource\RelationManagers;
 use App\Models\Vehicles;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 

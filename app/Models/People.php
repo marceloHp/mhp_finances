@@ -11,7 +11,7 @@ class People extends Model
 
     protected $guarded = ['id'];
 
-    public function addresses() {
+    public function address() {
         return $this->belongsTo(Address::class);
     }
 

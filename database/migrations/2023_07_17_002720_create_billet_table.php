@@ -20,10 +20,9 @@ return new class extends Migration
             $table->enum('status', ['pending', 'partial_pending', 'paid', 'canceled']);
             $table->dateTime('release_date');
             $table->dateTime('paid_date');
-            $table->integer('installments');
             $table->float('total_value');
             $table->float('pending_value');
-            $table->float('paid_value');
+            $table->float('paid_value')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

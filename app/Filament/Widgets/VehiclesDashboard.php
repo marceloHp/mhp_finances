@@ -2,13 +2,14 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Widgets\BarChartWidget;
+use Filament\Widgets\ChartWidget;
 
-class VehiclesDashboard extends BarChartWidget
+class VehiclesDashboard extends ChartWidget
 {
     protected static ?string $heading = 'Chart';
+    protected static string $color = 'info';
 
-    protected function getHeading(): string
+    public function getHeading(): string
     {
         return 'Faturamento líquido';
     }
@@ -18,21 +19,18 @@ class VehiclesDashboard extends BarChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Faturamento',
+                    'label' => 'Blog posts created',
                     'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
-                    'backgroundColor' => [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 205, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(201, 203, 207, 0.2)'
-                    ]
+                    'borderColor' => '#36A2EB',
+                    'backgroundColor' => '#36A2EB',
                 ],
             ],
             'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-
         ];
+    }
+
+    protected function getType(): string
+    {
+        return 'bar';
     }
 }

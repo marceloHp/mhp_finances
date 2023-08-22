@@ -4,13 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BilletResource\Pages;
 use App\Filament\Resources\BilletResource\RelationManagers;
+use App\Filament\Support\Billet\Status;
 use App\Models\Billet;
-use App\Models\User;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Support\RawJs;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class BilletResource extends Resource
 {
@@ -35,10 +36,9 @@ class BilletResource extends Resource
                     ->translateLabel()
                     ->label('Usuário')
                     ->searchable(),
-//                ->default(auth()->user()),
                 Forms\Components\Select::make('status')
                     ->required()
-                    ->options(['pending' => 'Pendente', 'partial_pending' => 'Parcialmente pendente', 'paid' => "Quitado", 'canceled' => 'Cancelado'])
+                    ->options(Status::class)
                     ->default('pending'),
                 Forms\Components\DateTimePicker::make('release_date')
                     ->required()->translateLabel()->label('Data de Lançamento'),
@@ -48,29 +48,22 @@ class BilletResource extends Resource
                     ->required()->translateLabel()->label('Parcelas'),
                 Forms\Components\TextInput::make('total_value')
                     ->required()->translateLabel()->label('Valor total (R$)')
-                    ->reactive()
-                    ->afterStateUpdated(fn ($state, callable $set) => ($set('pending_value', $state)))
-                    ->mask(fn(Forms\Components\TextInput\Mask $mask) => $mask
-                        ->numeric()
-                        ->decimalPlaces(2)
-                        ->thousandsSeparator('')
-                        ->padFractionalZeros()),
+                    ->mask(RawJs::make(<<<'JS'
+                            $money($input, '.', ',', 4)
+                           JS)),
                 Forms\Components\TextInput::make('pending_value')
                     ->required()->translateLabel()->label('Valor pendente (R$)')
-                    ->disabled()
-                    ->mask(fn(Forms\Components\TextInput\Mask $mask) => $mask
-                        ->numeric()
-                        ->decimalPlaces(2)
-                        ->padFractionalZeros()),
+                    ->mask(RawJs::make(<<<'JS'
+                            $money($input, '.', ',', 4)
+                           JS)),
                 Forms\Components\TextInput::make('paid_value')
                     ->translateLabel()
                     ->label('Valor pago (R$)')
                     ->disabled()
                     ->default('0')
-                    ->mask(fn(Forms\Components\TextInput\Mask $mask) => $mask
-                        ->numeric()
-                        ->decimalPlaces(2)
-                        ->padFractionalZeros()),
+                    ->mask(RawJs::make(<<<'JS'
+                            $money($input, '.', ',', 4)
+                           JS)),
             ]);
     }
 
@@ -82,9 +75,7 @@ class BilletResource extends Resource
                     ->translateLabel()->label('Pessoa'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->translateLabel()->label('Usuário'),
-                Tables\Columns\TextColumn::make('status')
-                    ->translateLabel()->label('Status')
-                    ->enum(['pending' => 'Pendente', 'partial_pending' => 'Parcialmente pendente', 'paid' => "Quitado", 'canceled' => 'Cancelado']),
+                Tables\Columns\SelectColumn::make('status')->options(Status::class)->disabled(),
                 Tables\Columns\TextColumn::make('release_date')
                     ->dateTime()
                     ->translateLabel()->label('Data de lançamento'),
@@ -119,7 +110,7 @@ class BilletResource extends Resource
 
     public static function numberFormat($number): string
     {
-        return number_format($number, 2, '.', '');
+        return number_format((float)$number, 2, '.', '');
     }
 
     public static function getRelations(): array
