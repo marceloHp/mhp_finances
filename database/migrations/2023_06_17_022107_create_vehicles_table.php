@@ -15,11 +15,14 @@ return new class extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('identifier');
             $table->string('driver');
             $table->boolean('active');
+            $table->unsignedBigInteger('people_id');
             $table->timestamps();
+
+            $table->foreign('people_id')->references('id')->on('people');
         });
     }
 

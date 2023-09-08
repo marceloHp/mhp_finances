@@ -11,8 +11,8 @@ class FinancialReleases extends Model
 
     protected $guarded = ['id'];
 
-    public function vehicle() {
-        return $this->belongsTo(Vehicles::class);
+    public function people() {
+        return $this->belongsTo(People::class);
     }
 
 }

@@ -18,18 +18,4 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        Filament::serving(function () {
-            // Using Vite
-            Filament::registerTheme(
-                app(Vite::class)('resources/css/app.css'),
-            );
-        });
-    }
 }

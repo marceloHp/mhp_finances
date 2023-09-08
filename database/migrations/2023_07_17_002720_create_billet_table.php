@@ -22,6 +22,7 @@ return new class extends Migration
             $table->dateTime('paid_date');
             $table->float('total_value');
             $table->float('pending_value');
+            $table->integer('installments');
             $table->float('paid_value')->nullable();
             $table->timestamps();
 

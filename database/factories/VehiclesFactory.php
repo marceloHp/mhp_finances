@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\People;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,11 @@ class VehiclesFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name'=> 'Veículo' . random_int(0, 100),
+            'identifier' => 'ABC-123',
+            'driver' => fake()->name(),
+            'active' => true,
+            'people_id' => People::query()->get('id')->random()
         ];
     }
 }

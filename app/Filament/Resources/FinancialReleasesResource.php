@@ -25,9 +25,9 @@ class FinancialReleasesResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Grid::make()->schema([
-                    Forms\Components\Select::make('vehicle_id')
-                        ->required()->relationship('vehicle', 'name')
-                        ->searchable()->label('Veículo'),
+                    Forms\Components\Select::make('people_id')
+                        ->required()->relationship('people', 'name')
+                        ->searchable()->label('Pessoa')->preload(),
                     Forms\Components\TextInput::make('description')
                         ->required()->label('Descrição do lançamento'),
                     Forms\Components\Select::make('origin')->label('Origem')->options([
@@ -55,9 +55,9 @@ class FinancialReleasesResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')->label('ID')->copyable()->copyMessage('ID copied')->copyMessageDuration(100),
-                Tables\Columns\TextColumn::make('vehicle.name')->label('Veículo'),
+                Tables\Columns\TextColumn::make('people.name')->label('Pessoa'),
                 Tables\Columns\TextColumn::make('description')->label('Descrição do lançamento'),
-                Tables\Columns\SelectColumn::make('origin')->options(Origin::class),
+                Tables\Columns\SelectColumn::make('origin')->options(Origin::class)->label('Origem'),
                 Tables\Columns\TextColumn::make('recipient')->label('Beneficiário'),
                 Tables\Columns\TextColumn::make('value')->label('Valor (R$)')->formatStateUsing(fn(string $state): string => self::numberFormat($state)),
                 Tables\Columns\TextColumn::make('created_at')
