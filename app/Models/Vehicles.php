@@ -11,5 +11,7 @@ class Vehicles extends Model
 
     protected $guarded = ['id'];
 
-
+    public function people() {
+        return $this->belongsTo(People::class);
+    }
 }

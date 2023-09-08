@@ -29,13 +29,15 @@ class BilletResource extends Resource
                     ->relationship('people', 'name')
                     ->searchable()
                     ->translateLabel()
-                    ->label('Pessoa'),
+                    ->label('Pessoa')
+                    ->preload(),
                 Forms\Components\Select::make('user_id')
                     ->required()
                     ->relationship('user', 'name')
                     ->translateLabel()
                     ->label('Usuário')
-                    ->searchable(),
+                    ->searchable()
+                    ->preload(),
                 Forms\Components\Select::make('status')
                     ->required()
                     ->options(Status::class)

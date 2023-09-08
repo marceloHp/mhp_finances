@@ -5,6 +5,7 @@ namespace App\Filament\Resources\BilletResource\Pages;
 use App\Filament\Resources\BilletResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class EditBillet extends EditRecord
 {

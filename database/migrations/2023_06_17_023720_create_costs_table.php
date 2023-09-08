@@ -20,10 +20,10 @@ return new class extends Migration
             $table->enum('status', ['paid', 'pending']);
             $table->string('recipient');
             $table->float('value');
-            $table->unsignedBigInteger('vehicle_id');
+            $table->unsignedBigInteger('people_id');
             $table->timestamps();
 
-            $table->foreign('vehicle_id')->references('id')->on('vehicles');
+            $table->foreign('people_id')->references('id')->on('people');
         });
     }
 

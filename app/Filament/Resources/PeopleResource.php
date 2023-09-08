@@ -45,7 +45,8 @@ class PeopleResource extends Resource
                     ->translateLabel()
                     ->label('Endereço')
                     ->relationship('address', 'address')
-                    ->searchable(),
+                    ->searchable()
+                    ->preload(),
                 Forms\Components\TextInput::make('cellphone')
                     ->tel()
                     ->required()

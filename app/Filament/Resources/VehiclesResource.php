@@ -26,6 +26,7 @@ class VehiclesResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('id')->disabled(true),
+                Forms\Components\Select::make('people_id')->required()->relationship('people', 'name')->searchable()->label('Pessoa')->preload(),
                 Forms\Components\TextInput::make('name')
                     ->required()->translateLabel()->label('Nome'),
                 Forms\Components\TextInput::make('identifier')
