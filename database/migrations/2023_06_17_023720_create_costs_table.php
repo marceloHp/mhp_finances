@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('financial_releases', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('description');
+            $table->date('financial_date');
             $table->enum('origin', ['cash_entry', 'cash_out']);
             $table->enum('status', ['paid', 'pending']);
             $table->string('recipient');

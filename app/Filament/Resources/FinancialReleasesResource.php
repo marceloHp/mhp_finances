@@ -11,7 +11,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Table;
+use NumberFormatter;
 
 class FinancialReleasesResource extends Resource
 {
@@ -28,6 +30,7 @@ class FinancialReleasesResource extends Resource
                     Forms\Components\Select::make('people_id')
                         ->required()->relationship('people', 'name')
                         ->searchable()->label('Pessoa')->preload(),
+                    Forms\Components\DatePicker::make('financial_date')->label('Data do lançamento'),
                     Forms\Components\TextInput::make('description')
                         ->required()->label('Descrição do lançamento'),
                     Forms\Components\Select::make('origin')->label('Origem')->options([
@@ -44,7 +47,7 @@ class FinancialReleasesResource extends Resource
                     Forms\Components\TextInput::make('value')
                         ->required()->label('Valor (R$)')
                         ->mask(RawJs::make(<<<'JS'
-                            $money($input, '.', ',', 4)
+                            $money($input, ',', '.', 2)
                            JS))
                 ])->columns(2),
             ]);
@@ -54,19 +57,23 @@ class FinancialReleasesResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->label('ID')->copyable()->copyMessage('ID copied')->copyMessageDuration(100),
+                Tables\Columns\TextColumn::make('id')->label('ID')->copyable()->copyMessage('ID copiado')->copyMessageDuration(400),
                 Tables\Columns\TextColumn::make('people.name')->label('Pessoa'),
+                Tables\Columns\TextColumn::make('financial_date')->label('Data do lançamento')->dateTime('d/m/y'),
                 Tables\Columns\TextColumn::make('description')->label('Descrição do lançamento'),
-                Tables\Columns\SelectColumn::make('origin')->options(Origin::class)->label('Origem'),
+                Tables\Columns\SelectColumn::make('origin')->options(Origin::class)->label('Origem')->columnSpan('full')->disabled(),
                 Tables\Columns\TextColumn::make('recipient')->label('Beneficiário'),
-                Tables\Columns\TextColumn::make('value')->label('Valor (R$)')->formatStateUsing(fn(string $state): string => self::numberFormat($state)),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/y H:m:s')->label('Criado em'),
+                Tables\Columns\TextColumn::make('value')->label('Valor (R$)')
+                    ->formatStateUsing(fn(string $state): string => self::numberFormat($state))
+                    ->summarize(Sum::make()->label('Total (R$)')->money('BRL')),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime('d/m/y H:m:s')->label('Última atualização'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('origin')->options([
+                    'cash_entry' => 'Entrada',
+                    'cash_out' => 'Saída',
+                ])->label('Origem')->multiple(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->translateLabel()->label('Editar'),
@@ -95,7 +102,10 @@ class FinancialReleasesResource extends Resource
 
     public static function numberFormat($number): string
     {
-        return number_format((float)$number, 2);
+        $string = str_replace(',', '.', $number);
+        $valorFloat = floatval($string);
+        $fmt = new NumberFormatter( 'pt_BR', NumberFormatter::CURRENCY );
+        return $fmt->formatCurrency($valorFloat, 'BRL');
     }
 
 }

@@ -2,7 +2,10 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\FinancialReleases;
+use App\Services\Dashboard;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Facades\DB;
 
 class VehiclesDashboard extends ChartWidget
 {
@@ -16,16 +19,17 @@ class VehiclesDashboard extends ChartWidget
 
     protected function getData(): array
     {
+        $data = app(Dashboard::class)->netRevenueData();
         return [
             'datasets' => [
                 [
-                    'label' => 'Blog posts created',
-                    'data' => [0, 10, 5, 2, 21, 32, 45, 74, 65, 45, 77, 89],
+                    'label' => 'Valor de entrada (R$)',
+                    'data' => [$data],
                     'borderColor' => '#36A2EB',
                     'backgroundColor' => '#36A2EB',
                 ],
             ],
-            'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            'labels' => ['Jan'],
         ];
     }
 
