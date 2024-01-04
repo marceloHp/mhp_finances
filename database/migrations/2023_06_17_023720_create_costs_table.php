@@ -19,12 +19,13 @@ return new class extends Migration
             $table->date('financial_date');
             $table->enum('origin', ['cash_entry', 'cash_out']);
             $table->enum('status', ['paid', 'pending']);
-            $table->string('recipient');
             $table->float('value');
             $table->unsignedBigInteger('people_id');
+            $table->unsignedBigInteger('financial_releases_categories_id');
             $table->timestamps();
 
             $table->foreign('people_id')->references('id')->on('people');
+            $table->foreign('ss')->references('id')->on('financial_releases_categories');
         });
     }
 
