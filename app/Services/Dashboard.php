@@ -8,9 +8,9 @@ class Dashboard
 {
     public function netRevenueData(): float|int
     {
-        $data= DB::table('financial_releases')->select(['value', 'financial_date'])->where('origin', '=', 'cash_out')->groupBy('financial_date');
+        $data= DB::table('financial_releases')->select(['value', 'financial_date'])->where('origin', '=', 'cash_out')->groupBy('financial_date')->get();
 
-        dd($data);
+
         $dataDash = [];
         foreach ($data as $key => $value)
         {

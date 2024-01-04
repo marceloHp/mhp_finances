@@ -15,4 +15,8 @@ class FinancialReleases extends Model
         return $this->belongsTo(People::class);
     }
 
+    public function financialReleasesCategories() {
+        return $this->belongsTo(FinancialReleasesCategories::class);
+    }
+
 }
