@@ -2,22 +2,23 @@
 
 namespace App\Services;
 
+use DateTime;
 use Illuminate\Support\Facades\DB;
 
 class Dashboard
 {
-    public function netRevenueData(): float|int
+    public function netRevenueData(): \Illuminate\Support\Collection
     {
-        $data= DB::table('financial_releases')->select(['value', 'financial_date'])->where('origin', '=', 'cash_out')->groupBy('financial_date')->get();
-
-
-        $dataDash = [];
-        foreach ($data as $key => $value)
-        {
-            $dataDash['data'] =  number_format((float)$value->value, '2');
-        }
-
-        return (array_sum($dataDash));
+        $data = DB::table('financial_releases')
+            ->select(
+                DB::raw('financial_date'),
+                DB::raw('SUM(value) as total')
+            )
+            ->where('origin', '=', 'cash_entry')
+            ->groupBy(DB::raw('strftime("%m", financial_date)'))
+            ->orderBy('mes')
+            ->get();
+        return $data;
     }
 
 }
