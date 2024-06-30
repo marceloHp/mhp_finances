@@ -5,9 +5,9 @@ namespace App\Services;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 
-class Dashboard
+class GrossRevenueDashboardService
 {
-    public function netRevenueData(): \Illuminate\Support\Collection
+    public function grossRevenueData(): \Illuminate\Support\Collection
     {
         $data = DB::table('financial_releases')
             ->select(
