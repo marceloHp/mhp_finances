@@ -13,19 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('people', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->string('name');
-            $table->enum('type', ['employee', 'supllier', 'costumer']);
-            $table->integer('identifier');
-            $table->unsignedBigInteger('address_id');
-            $table->enum('people_type', ['cpf', 'cnpj']);
-            $table->string('cellphone');
-            $table->boolean('active');
-            $table->date('born_date');
+        Schema::create('addresses', function (Blueprint $table) {
+            $table->id()->autoIncrement()->nullable(false);
+            $table->boolean('main');
+            $table->string('address');
+            $table->string('neighborhood');
+            $table->string('address_number');
+            $table->string('complement');
+            $table->string('city');
             $table->timestamps();
-
-            $table->foreign('address_id')->references('id')->on('addresses');
         });
     }
 
@@ -36,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('people');
+        Schema::dropIfExists('addresses');
     }
 };

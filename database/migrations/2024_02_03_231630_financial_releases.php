@@ -16,14 +16,16 @@ return new class extends Migration
         Schema::create('financial_releases', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('description');
+            $table->date('financial_date');
             $table->enum('origin', ['cash_entry', 'cash_out']);
             $table->enum('status', ['paid', 'pending']);
-            $table->string('recipient');
             $table->float('value');
             $table->unsignedBigInteger('people_id');
+            $table->unsignedBigInteger('financial_releases_categories_id');
             $table->timestamps();
 
             $table->foreign('people_id')->references('id')->on('people');
+            $table->foreign('financial_releases_categories_id')->references('id')->on('financial_releases_categories');
         });
     }
 

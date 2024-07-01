@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2.8",
+        "ext-intl": "*",
+        "ariaieboy/filament-currency": "^1.2",
         "filament/filament": "^3.0-stable",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.0",

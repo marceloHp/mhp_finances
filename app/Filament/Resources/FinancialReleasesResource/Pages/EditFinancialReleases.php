@@ -14,7 +14,7 @@ class EditFinancialReleases extends EditRecord
     protected function getActions(): array
     {
         return [
-            Actions\DeleteAction::make()->translateLabel()->label('Exluir'),
+            Actions\DeleteAction::make()->translateLabel()->label('Excluir'),
         ];
     }
 

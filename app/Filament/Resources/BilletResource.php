@@ -50,22 +50,22 @@ class BilletResource extends Resource
                     ->required()->translateLabel()->label('Parcelas'),
                 Forms\Components\TextInput::make('total_value')
                     ->required()->translateLabel()->label('Valor total (R$)')
-                    ->mask(RawJs::make(<<<'JS'
-                            $money($input, '.', ',', 4)
-                           JS)),
+                    ->currencyMask('.', ',', 2)
+                ->reactive()
+                    ->afterStateUpdated(function ($set, $state) {
+                        $set('pending_value', $state);
+                    }),
                 Forms\Components\TextInput::make('pending_value')
                     ->required()->translateLabel()->label('Valor pendente (R$)')
                     ->mask(RawJs::make(<<<'JS'
-                            $money($input, '.', ',', 4)
+                            $money($input, ',', '.', 2)
                            JS)),
                 Forms\Components\TextInput::make('paid_value')
                     ->translateLabel()
                     ->label('Valor pago (R$)')
                     ->disabled()
                     ->default('0')
-                    ->mask(RawJs::make(<<<'JS'
-                            $money($input, '.', ',', 4)
-                           JS)),
+                    ->currencyMask('.', ',', 2),
             ]);
     }
 
